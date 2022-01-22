@@ -235,8 +235,8 @@ void LevelScene::spawnStone(const int positionX, const int positionY)
                 )).get()
             )
     ));*/
-    GameActor* stone = new ShineDecoratorWall(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer(), new BorderDecoratorWall(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer(), new WallStone(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer())));
-    //auto stone = std::make_shared<WallStone>(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer());
+    //GameActor* stone = new ShineDecoratorWall(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer(), new BorderDecoratorWall(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer(), new WallStone(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer())));
+    auto stone = std::make_shared<WallStone>(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer());
     stone->setPosition(positionX, positionY);
     stone->setSize(scaledTileSize, scaledTileSize);
     std::shared_ptr<GameActor> temp(stone);
@@ -245,16 +245,16 @@ void LevelScene::spawnStone(const int positionX, const int positionY)
     backgroundObjectLastNumber++;
 }
 
-void LevelScene::spawnWallPacman(const int positionX, const int positionY, Tile* _tile)
-{
-    auto wallPacman = std::make_shared<WallPacmanAdapter>(gameManager->getAssetManager()->getTexture(GameTexture::WallPacman), gameManager->getRenderer(), _tile);
-    wallPacman->setPosition(positionX, positionY);
-    wallPacman->setSDLPosition(positionX, positionY);
-    wallPacman->setSize(scaledTileSize, scaledTileSize);
-    addObject(wallPacman);
-    collisions.push_back(std::make_pair(GameTile::Stone, wallPacman));
-    backgroundObjectLastNumber++;
-}
+//void LevelScene::spawnWallPacman(const int positionX, const int positionY, Tile* _tile)
+//{
+//    auto wallPacman = std::make_shared<WallPacmanAdapter>(gameManager->getAssetManager()->getTexture(GameTexture::WallPacman), gameManager->getRenderer(), _tile);
+//    wallPacman->setPosition(positionX, positionY);
+//    wallPacman->setSDLPosition(positionX, positionY);
+//    wallPacman->setSize(scaledTileSize, scaledTileSize);
+//    addObject(wallPacman);
+//    collisions.push_back(std::make_pair(GameTile::Stone, wallPacman));
+//    backgroundObjectLastNumber++;
+//}
 
 
 void LevelScene::spawnPlayer(const int positionX, const int positionY)
