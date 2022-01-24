@@ -62,6 +62,9 @@ public:
         * @param delta - delta time since previous update in milliseconds
         */
     virtual void update(const unsigned int delta) override;
+    // timers in ms const
+    const int levelTimerStart = 200500;
+    int levelTimer = levelTimerStart;
 
 private:
     
@@ -126,7 +129,7 @@ private:
     bool crearObjetosJuego(string _path);
 
     // timers in ms const
-    const int levelTimerStart = 200500;
+    //const int levelTimerStart = 200500;
     const int levelTimerUpdateText = 1000;
     const int bombTimerStart = 1500;
     const int bangTimerStart = 800;
@@ -156,7 +159,7 @@ private:
     int playerDirectionX = 0; // direction used for control
     int playerDirectionY = 0; // direction used for control
     // timer variables
-    int levelTimer = levelTimerStart;
+    //int levelTimer = levelTimerStart;
     int levelTimerDelta = 0;
     int bombTimer = 0;
     int bangTimer = 0;

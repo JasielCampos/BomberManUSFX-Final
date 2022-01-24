@@ -424,6 +424,41 @@ void LevelScene::spawnEnemy(GameTexture texture, AIType type, const int position
     
 }
 
+void LevelScene::generateEnemies()
+{
+    // we need enemy in random tile
+    const auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    auto randCount = std::bind(std::uniform_int_distribution<int>(minEnemiesOnLevel, maxEnemiesOnLevel),
+        std::mt19937(static_cast<unsigned int>(seed)));
+    auto randType = std::bind(std::uniform_int_distribution<int>(0, 1),
+        std::mt19937(static_cast<unsigned int>(seed)));
+    auto randTexture = std::bind(std::uniform_int_distribution<int>(0, 2),
+        std::mt19937(static_cast<unsigned int>(seed)));
+    auto randCellX = std::bind(std::uniform_int_distribution<int>(0, tileArrayHeight - 1),
+        std::mt19937(static_cast<unsigned int>(seed)));
+    auto randCellY = std::bind(std::uniform_int_distribution<int>(0, tileArrayWidth - 1),
+        std::mt19937(static_cast<unsigned int>(seed)));
+    // start enemies spawn
+    for (int i = 0; i < randCount(); i++)
+    {
+        // try to find suitable tile
+        int cellX = randCellX();
+        int cellY = randCellY();
+        while (tiles[cellX][cellY] == GameTile::Brick || tiles[cellX][cellY] == GameTile::Stone ||
+            tiles[cellX][cellY] == GameTile::EmptyGrass)
+        {
+            cellX = randCellX();
+            cellY = randCellY();
+        }
+        // spawn enemy
+        int textureRand = randTexture();
+        spawnEnemy(textureRand == 0 ? GameTexture::Enemy1 :
+            (textureRand == 1 ? GameTexture::Enemy2 : GameTexture::Enemy3),
+            randType() == 0 ? AIType::wandering : AIType::chasing,
+            fieldPositionX + cellY * scaledTileSize, fieldPositionY + cellX * scaledTileSize);
+    }
+}
+
 void LevelScene::spawnItem(GameTexture texture, const int positionX, const int positionY)
 {
     if (gameVersion == GameVersion::GAMEVERSION_CARTOON)
@@ -446,42 +481,18 @@ void LevelScene::spawnItem(GameTexture texture, const int positionX, const int p
         items.push_back(item);
     }
 
-}
-
-void LevelScene::generateEnemies()
-{
-    // we need enemy in random tile
-    const auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-    auto randCount = std::bind(std::uniform_int_distribution<int>(minEnemiesOnLevel, maxEnemiesOnLevel),
-                                std::mt19937(static_cast<unsigned int>(seed)));
-    auto randType = std::bind(std::uniform_int_distribution<int>(0, 1),
-                                std::mt19937(static_cast<unsigned int>(seed)));
-    auto randTexture = std::bind(std::uniform_int_distribution<int>(0, 2),
-                                    std::mt19937(static_cast<unsigned int>(seed)));
-    auto randCellX = std::bind(std::uniform_int_distribution<int>(0, tileArrayHeight - 1),
-                                std::mt19937(static_cast<unsigned int>(seed)));
-    auto randCellY = std::bind(std::uniform_int_distribution<int>(0, tileArrayWidth - 1),
-                                std::mt19937(static_cast<unsigned int>(seed)));
-    // start enemies spawn
-    for(int i = 0; i < randCount(); i++)
+    if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
     {
-        // try to find suitable tile
-        int cellX = randCellX();
-        int cellY = randCellY();
-        while(tiles[cellX][cellY] == GameTile::Brick || tiles[cellX][cellY] == GameTile::Stone ||
-                tiles[cellX][cellY] == GameTile::EmptyGrass)
-        {
-            cellX = randCellX();
-            cellY = randCellY();
-        }
-        // spawn enemy
-        int textureRand = randTexture();
-        spawnEnemy(textureRand == 0 ? GameTexture::Enemy1 :
-                                        (textureRand == 1 ? GameTexture::Enemy2 : GameTexture::Enemy3),
-                    randType() == 0 ? AIType::wandering : AIType::chasing,
-                    fieldPositionX + cellY * scaledTileSize, fieldPositionY + cellX * scaledTileSize);
+        auto item = std::make_shared<Item>(gameManager->getAssetManager()->getTexture(GameTexture::RelojItem), gameManager->getRenderer());
+
+        item->setPosition(positionX, positionY);
+        item->setSize(scaledTileSize, scaledTileSize);
+        addObject(item);
+        items.push_back(item);
     }
 }
+
+
 
 void LevelScene::generateItems()
 {
@@ -514,6 +525,11 @@ void LevelScene::generateItems()
         if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
         {
             spawnItem(GameTexture::RayoItem,
+                fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
+        }
+        if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+        {
+            spawnItem(GameTexture::RelojItem,
                 fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
         }
     }
@@ -1063,7 +1079,12 @@ void LevelScene::updateItemsCollision()
                     removeObject(item);
                     player->speed = 0.02f;
                 }
-
+                if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+                {
+                    // aumenta tiempo tiempo de partida
+                    removeObject(item);
+                    levelTimer= levelTimer + 1000;
+                }
                 
             }
         }
