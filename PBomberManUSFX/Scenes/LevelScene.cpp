@@ -434,41 +434,17 @@ void LevelScene::spawnItem(GameTexture texture, const int positionX, const int p
         item->setSize(scaledTileSize, scaledTileSize);
         addObject(item);
         items.push_back(item);
-
-        /*const int itemCellX = static_cast<int>(
-            round((item->getPositionX() - fieldPositionX) / static_cast<float>(scaledTileSize)));
-        const int itemCellY = static_cast<int>(
-            round((item->getPositionY() - fieldPositionY) / static_cast<float>(scaledTileSize)));
-        tiles[itemCellY][itemCellX] = GameTile::Item;*/
     }
-    //else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
-    //{
-    //    /*std::shared_ptr<Enemy> enemy;
-    //    enemy = std::make_unique<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy1), gameManager->getRenderer());*/
-    //    auto enemy = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy4), gameManager->getRenderer());
-    //    //enemy = dynamic_pointer_cast<Enemy>(factory->CreateEnemy(type, positionX, positionY));
 
+    if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
+    {
+        auto item = std::make_shared<Item>(gameManager->getAssetManager()->getTexture(GameTexture::RayoItem), gameManager->getRenderer());
 
-    //    //auto enemy = std::make_shared<ClasicoEnemy>(gameManager->getAssetManager()->getTexture(texture), gameManager->getRenderer());
-    //    enemy->setPosition(positionX, positionY);
-    //    enemy->setSize(scaledTileSize, scaledTileSize);
-    //    enemy->setAIType(type);
-    //    addObject(enemy);
-    //    enemies.push_back(enemy);
-    //}
-    //else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
-    //{
-    //    auto enemy = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy2), gameManager->getRenderer());
-    //    //enemy = dynamic_pointer_cast<Enemy>(factory->CreateEnemy(type, positionX, positionY));
-
-
-    //    //auto enemy = std::make_shared<ClasicoEnemy>(gameManager->getAssetManager()->getTexture(texture), gameManager->getRenderer());
-    //    enemy->setPosition(positionX, positionY);
-    //    enemy->setSize(scaledTileSize, scaledTileSize);
-    //    enemy->setAIType(type);
-    //    addObject(enemy);
-    //    enemies.push_back(enemy);
-    //}
+        item->setPosition(positionX, positionY);
+        item->setSize(scaledTileSize, scaledTileSize);
+        addObject(item);
+        items.push_back(item);
+    }
 
 }
 
@@ -530,9 +506,16 @@ void LevelScene::generateItems()
             cellIY = randCellY();
         }
         // spawn item
-        
-        spawnItem(GameTexture::SkullItem,
+        if (gameVersion == GameVersion::GAMEVERSION_CARTOON) 
+        {
+            spawnItem(GameTexture::SkullItem,
             fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
+        }
+        if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
+        {
+            spawnItem(GameTexture::RayoItem,
+                fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
+        }
     }
 }
 
@@ -977,16 +960,7 @@ void LevelScene::updatePlayerCollision()
             player->revertLastMove();
         }
     }
-   /* if (gameVersion == GameVersion::GAMEVERSION_CARTOON)
-    {
-        if (item != nullptr) 
-        {
-            if (isCollisionDetected(playerRect, item->getRect())) {
-                gameOver();
-            }
-        }
-    }*/
-    // door collision
+
     if(door != nullptr)
     {
         if(isCollisionDetected(playerRect, door->getRect()))
@@ -1083,6 +1057,13 @@ void LevelScene::updateItemsCollision()
                     player = nullptr;
                     gameOver();
                 }
+                if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
+                {
+                    // player aumenta velocidad
+                    removeObject(item);
+                    player->speed = 0.02f;
+                }
+
                 
             }
         }
