@@ -52,6 +52,8 @@ LevelScene::LevelScene(GameManager* _gameManager, const unsigned int _stage, con
     spawnPlayer(fieldPositionX + playerStartX * scaledTileSize, fieldPositionY + playerStartY * scaledTileSize);
     // generate enemies
     generateEnemies();
+    // generate enemies
+    generateItems();
     // set timer
     updateLevelTimer();
 }
@@ -101,6 +103,8 @@ LevelScene::LevelScene(GameManager* _gameManager, GameVersion _gameVersion, cons
         fieldPositionY + playerStartY * scaledTileSize);
     // generate enemies
     generateEnemies();
+
+    generateItems();
     // set timer
     updateLevelTimer();
 }
@@ -420,6 +424,54 @@ void LevelScene::spawnEnemy(GameTexture texture, AIType type, const int position
     
 }
 
+void LevelScene::spawnItem(GameTexture texture, const int positionX, const int positionY)
+{
+    if (gameVersion == GameVersion::GAMEVERSION_CARTOON)
+    {
+        auto item = std::make_shared<Item>(gameManager->getAssetManager()->getTexture(GameTexture::SkullItem), gameManager->getRenderer());
+        
+        item->setPosition(positionX, positionY);
+        item->setSize(scaledTileSize, scaledTileSize);
+        addObject(item);
+        items.push_back(item);
+
+        /*const int itemCellX = static_cast<int>(
+            round((item->getPositionX() - fieldPositionX) / static_cast<float>(scaledTileSize)));
+        const int itemCellY = static_cast<int>(
+            round((item->getPositionY() - fieldPositionY) / static_cast<float>(scaledTileSize)));
+        tiles[itemCellY][itemCellX] = GameTile::Item;*/
+    }
+    //else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+    //{
+    //    /*std::shared_ptr<Enemy> enemy;
+    //    enemy = std::make_unique<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy1), gameManager->getRenderer());*/
+    //    auto enemy = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy4), gameManager->getRenderer());
+    //    //enemy = dynamic_pointer_cast<Enemy>(factory->CreateEnemy(type, positionX, positionY));
+
+
+    //    //auto enemy = std::make_shared<ClasicoEnemy>(gameManager->getAssetManager()->getTexture(texture), gameManager->getRenderer());
+    //    enemy->setPosition(positionX, positionY);
+    //    enemy->setSize(scaledTileSize, scaledTileSize);
+    //    enemy->setAIType(type);
+    //    addObject(enemy);
+    //    enemies.push_back(enemy);
+    //}
+    //else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
+    //{
+    //    auto enemy = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy2), gameManager->getRenderer());
+    //    //enemy = dynamic_pointer_cast<Enemy>(factory->CreateEnemy(type, positionX, positionY));
+
+
+    //    //auto enemy = std::make_shared<ClasicoEnemy>(gameManager->getAssetManager()->getTexture(texture), gameManager->getRenderer());
+    //    enemy->setPosition(positionX, positionY);
+    //    enemy->setSize(scaledTileSize, scaledTileSize);
+    //    enemy->setAIType(type);
+    //    addObject(enemy);
+    //    enemies.push_back(enemy);
+    //}
+
+}
+
 void LevelScene::generateEnemies()
 {
     // we need enemy in random tile
@@ -452,6 +504,35 @@ void LevelScene::generateEnemies()
                                         (textureRand == 1 ? GameTexture::Enemy2 : GameTexture::Enemy3),
                     randType() == 0 ? AIType::wandering : AIType::chasing,
                     fieldPositionX + cellY * scaledTileSize, fieldPositionY + cellX * scaledTileSize);
+    }
+}
+
+void LevelScene::generateItems()
+{
+    // we need enemy in random tile
+    const auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    auto randCount = std::bind(std::uniform_int_distribution<int>(minItemsOnLevel, maxItemsOnLevel),
+        std::mt19937(static_cast<unsigned int>(seed)));
+
+    auto randCellX = std::bind(std::uniform_int_distribution<int>(0, tileArrayHeight - 1),
+        std::mt19937(static_cast<unsigned int>(seed)));
+    auto randCellY = std::bind(std::uniform_int_distribution<int>(0, tileArrayWidth - 1),
+        std::mt19937(static_cast<unsigned int>(seed)));
+    // start enemies spawn
+    for (int i = 0; i < randCount(); i++)
+    {
+        // try to find suitable tile
+        int cellIX = randCellX();
+        int cellIY = randCellY();
+        while (tiles[cellIX][cellIY] == GameTile::Grass)
+        {
+            cellIX = randCellX();
+            cellIY = randCellY();
+        }
+        // spawn item
+        
+        spawnItem(GameTexture::SkullItem,
+            fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
     }
 }
 
@@ -642,6 +723,8 @@ void LevelScene::update(const unsigned int delta)
     updatePlayerCollision();
     // update collision of enemies
     updateEnemiesCollision();
+    // update collision of items
+    updateItemsCollision();
     // update collision of bricks
     updateBangsCollision();
     // update camera
@@ -894,6 +977,15 @@ void LevelScene::updatePlayerCollision()
             player->revertLastMove();
         }
     }
+   /* if (gameVersion == GameVersion::GAMEVERSION_CARTOON)
+    {
+        if (item != nullptr) 
+        {
+            if (isCollisionDetected(playerRect, item->getRect())) {
+                gameOver();
+            }
+        }
+    }*/
     // door collision
     if(door != nullptr)
     {
@@ -965,6 +1057,36 @@ void LevelScene::updateEnemiesCollision()
                 }
             }
         }
+    }
+}
+
+void LevelScene::updateItemsCollision()
+{
+    // iterate enemies for collision
+    for (const auto& item : items)
+    {
+        
+        
+        // check for player collision
+        if (player != nullptr)
+        {
+            // set width to smaller size
+            SDL_Rect playerRect = player->getRect();
+            playerRect.w = static_cast<int>(playerRect.w * 0.2);
+            playerRect.h = static_cast<int>(playerRect.h * 0.2);
+            if (isCollisionDetected(playerRect, item->getRect()))
+            {
+                if (gameVersion == GameVersion::GAMEVERSION_CARTOON) 
+                {
+                    // player killed by skullitem
+                    removeObject(player);
+                    player = nullptr;
+                    gameOver();
+                }
+                
+            }
+        }
+        
     }
 }
 

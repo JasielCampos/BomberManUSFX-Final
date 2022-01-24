@@ -24,6 +24,8 @@ enum class GameTexture : int
     Player4,
     Player5,
     Player6,
+    SkullItem,
+    RayoItem,
     Enemy1,
     Enemy2,
     Enemy3,

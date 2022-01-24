@@ -11,6 +11,7 @@
 
 #include "../Const.h"
 #include "../Entities/Enemy.h"
+#include "../Entities/Item.h"
 #include "../Entities/Music.h"
 #include "../Entities/Player.h"
 #include "../Entities/Sound.h"
@@ -69,6 +70,7 @@ private:
     void generateTileMap();
 
     void generateEnemies();
+    void generateItems();
     void spawnMetal(const int positionX, const int positionY);
     void spawnGrass(const int positionX, const int positionY);
     void spawnBrick(const int positionX, const int positionY);
@@ -77,6 +79,7 @@ private:
 
     void spawnPlayer(const int positionX, const int positionY);
     void spawnEnemy(GameTexture texture, AIType type, const int positionX, const int positionY);
+    void spawnItem(GameTexture texture, const int positionX, const int positionY);
     void spawnBomb(GameGraphicObject* object);
     void spawnBang(GameGraphicObject* object);
     void spawnDoor(GameGraphicObject* object);
@@ -112,6 +115,7 @@ private:
     // update collisions
     void updatePlayerCollision();
     void updateEnemiesCollision();
+    void updateItemsCollision();
     void updateBangsCollision();
     bool isCollisionDetected(const SDL_Rect& rect1, const SDL_Rect& rect2) const;
     // destroy brick
@@ -141,7 +145,9 @@ private:
     std::shared_ptr<Player> player = nullptr;                         // player
     std::shared_ptr<Sprite> bomb = nullptr;                           // player's bomb
     std::shared_ptr<Sprite> door = nullptr;                           // door for level finish
+    std::shared_ptr<Sprite> item = nullptr;
     std::vector<std::shared_ptr<Enemy>> enemies;                      // enemies
+    std::vector<std::shared_ptr<Item>> items;
     std::vector<std::pair<GameTile, std::shared_ptr<GameGraphicObject>>> collisions; // collisions
     std::vector<std::shared_ptr<GameGraphicObject>> bangs;                       // bomb's bang
     GameTile tiles[tileArrayHeight][tileArrayWidth];                      // tilemap

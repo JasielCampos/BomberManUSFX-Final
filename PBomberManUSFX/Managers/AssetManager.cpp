@@ -30,6 +30,7 @@ void AssetManager::load(SDL_Renderer* renderer)
     loadTexture(renderer, GameTexture::Player4, "assets/player4.png");
     loadTexture(renderer, GameTexture::Player5, "assets/player5.png");
     loadTexture(renderer, GameTexture::Player6, "assets/player6.png");
+    loadTexture(renderer, GameTexture::SkullItem, "assets/skull.png");
     loadTexture(renderer, GameTexture::Enemy1, "assets/enemy_1.png");
     loadTexture(renderer, GameTexture::Enemy2, "assets/enemy_2.png");
     loadTexture(renderer, GameTexture::Enemy3, "assets/enemy_3.png");

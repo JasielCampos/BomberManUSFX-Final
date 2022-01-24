@@ -178,6 +178,7 @@
     <ClCompile Include="Factories\FactoryGameClasico.cpp" />
     <ClCompile Include="Factories\FactoryGamePersonalizado.cpp" />
     <ClCompile Include="Factories\FactoryGameRealista.cpp" />
+    <ClCompile Include="Entities\Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scenes\GameLevelScene.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="Factories\FactoryGamePersonalizado.h" />
     <ClInclude Include="Factories\FactoryGameRealista.h" />
     <ClInclude Include="GameAITypes.h" />
+    <ClInclude Include="Entities\Item.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scenes\GameLevelScene.h" />
     <ClInclude Include="GameManager.h" />
