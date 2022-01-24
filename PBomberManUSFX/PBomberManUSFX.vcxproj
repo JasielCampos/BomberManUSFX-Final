@@ -198,6 +198,7 @@
     <ClCompile Include="Entities\WallMetal.cpp" />
     <ClCompile Include="Entities\WallBrick.cpp" />
     <ClCompile Include="Entities\WallStone.cpp" />
+    <ClCompile Include="Scenes\YouWinScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Adapters\GameObjectPacman.h" />
@@ -260,6 +261,7 @@
     <ClInclude Include="Entities\WallMetal.h" />
     <ClInclude Include="Entities\WallBrick.h" />
     <ClInclude Include="Entities\WallStone.h" />
+    <ClInclude Include="Scenes\YouWinScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\bomber.bmp" />

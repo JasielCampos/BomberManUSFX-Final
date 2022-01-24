@@ -7,6 +7,7 @@
 #include "GameManager.h"
 #include "./Scenes/LevelScene.h"
 #include "./Scenes/MenuScene.h"
+#include "./Scenes/YouWinScene.h"
 
 
 GameManager* GameManager::instance = nullptr;
@@ -122,7 +123,7 @@ void GameManager::execute()
     // create menu scene
     sceneManager->addScene("menu", std::make_shared<MenuScene>(this));
     sceneManager->activateScene("menu");
-
+    sceneManager->addScene("you win", std::make_shared<YouWinScene>(this));
     SDL_Event event;
 
     while(isRunning)

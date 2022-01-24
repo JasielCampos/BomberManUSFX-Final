@@ -471,7 +471,7 @@ void LevelScene::spawnItem(GameTexture texture, const int positionX, const int p
         items.push_back(item);
     }
 
-    if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
+    else if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
     {
         auto item = std::make_shared<Item>(gameManager->getAssetManager()->getTexture(GameTexture::RayoItem), gameManager->getRenderer());
 
@@ -481,9 +481,18 @@ void LevelScene::spawnItem(GameTexture texture, const int positionX, const int p
         items.push_back(item);
     }
 
-    if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+    else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
     {
         auto item = std::make_shared<Item>(gameManager->getAssetManager()->getTexture(GameTexture::RelojItem), gameManager->getRenderer());
+
+        item->setPosition(positionX, positionY);
+        item->setSize(scaledTileSize, scaledTileSize);
+        addObject(item);
+        items.push_back(item);
+    }
+    else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
+    {
+        auto item = std::make_shared<Item>(gameManager->getAssetManager()->getTexture(GameTexture::MedalItem), gameManager->getRenderer());
 
         item->setPosition(positionX, positionY);
         item->setSize(scaledTileSize, scaledTileSize);
@@ -522,14 +531,19 @@ void LevelScene::generateItems()
             spawnItem(GameTexture::SkullItem,
             fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
         }
-        if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
+        else if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
         {
             spawnItem(GameTexture::RayoItem,
                 fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
         }
-        if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+        else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
         {
             spawnItem(GameTexture::RelojItem,
+                fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
+        }
+        else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
+        {
+            spawnItem(GameTexture::MedalItem,
                 fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
         }
     }
@@ -652,6 +666,7 @@ void LevelScene::gameOver()
     gameOverTimer = gameOverTimerStart;
     isGameOver = true;
 }
+
 
 void LevelScene::exit() const
 {
@@ -1073,17 +1088,23 @@ void LevelScene::updateItemsCollision()
                     player = nullptr;
                     gameOver();
                 }
-                if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
+                else if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
                 {
                     // player aumenta velocidad
                     removeObject(item);
                     player->speed = 0.02f;
                 }
-                if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+                else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
                 {
                     // aumenta tiempo tiempo de partida
                     removeObject(item);
                     levelTimer= levelTimer + 1000;
+                }
+                else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
+                {
+                    // player cambia de skin
+                    removeObject(item);
+                    gameManager->getSceneManager()->activateScene("you win");
                 }
                 
             }

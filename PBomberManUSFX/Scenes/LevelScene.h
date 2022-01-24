@@ -97,6 +97,7 @@ private:
         *
         */
     void gameOver();
+
     /**
         * @brief Exit level
         *
