@@ -66,6 +66,12 @@ public:
     const int levelTimerStart = 200500;
     int levelTimer = levelTimerStart;
 
+    //min max enemies
+    int minEnemiesOnLevel = 1;    // minimum enemies count on level
+    int maxEnemiesOnLevel = 1;   // maximum enemies count on level
+    //vida
+    int vida = 3;
+
 private:
     
     // spawn and generation of map objects
@@ -116,6 +122,8 @@ private:
     void updateCamera();
     // score update
     void updateScore();
+    // vida update
+    void updateVida();
     // update collisions
     void updatePlayerCollision();
     void updateEnemiesCollision();
@@ -137,8 +145,8 @@ private:
     const int gameOverTimerStart = 1000;
     const int winTimerStart = 200;
     // const for score
-    const unsigned int scoreRewardForKill = 200;
-    const unsigned int scoreRewardForStage = 1000;
+    const unsigned int scoreRewardForKill = 100;
+    const unsigned int scoreRewardForStage = 200;
 
     std::shared_ptr<Music> menuMusic = nullptr;                       // menu music
     std::shared_ptr<Sound> gameoverSound = nullptr;                   // game over sound
@@ -146,6 +154,7 @@ private:
     std::shared_ptr<Sound> explosionSound = nullptr;                  // explosion sound
     std::shared_ptr<Text> timerNumber = nullptr;                      // timer
     std::shared_ptr<Text> scoreNumber = nullptr;                      // score
+    std::shared_ptr<Text> vidasNumber = nullptr;
     std::shared_ptr<Player> player = nullptr;                         // player
     std::shared_ptr<Sprite> bomb = nullptr;                           // player's bomb
     std::shared_ptr<Sprite> door = nullptr;                           // door for level finish

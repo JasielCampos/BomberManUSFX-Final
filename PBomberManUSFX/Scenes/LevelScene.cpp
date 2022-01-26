@@ -115,8 +115,8 @@ void LevelScene::spawnTextObjects()
     const int fontHeight = static_cast<int>(gameManager->getWindowHeight() / 30.0f);
     // timer text
     auto timerText =
-        std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), "TIEMPO");
-    timerText->setSize(fontWidth * 4, fontHeight);
+        std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), "T");
+    timerText->setSize(20,20);
     timerText->setPosition(30, 10);
     timerText->attachToCamera(false);
     addObject(timerText);
@@ -136,15 +136,36 @@ void LevelScene::spawnTextObjects()
     scoreNumber =
         std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), scoreText);
     scoreNumber->setSize(fontWidth * static_cast<int>(scoreText.size()), fontHeight);
-    scoreNumber->setPosition(
+    scoreNumber->setPosition(200, 10);
+    /*scoreNumber->setPosition(
         static_cast<int>(gameManager->getWindowWidth() / 2.0f - scoreNumber->getWidth() / 2.0f),
-        timerText->getPositionY());
+        timerText->getPositionY());*/
     scoreNumber->attachToCamera(false);
     addObject(scoreNumber);
     backgroundObjectLastNumber++;
 
+    // vida text
+    std::string vTextConv = "Vidas";
+    auto vText =
+        std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), vTextConv);
+    vText->setSize(fontWidth * static_cast<int>(vTextConv.size()), fontHeight);
+    vText->setPosition(340, 10);
+    vText->attachToCamera(false);
+    addObject(vText);
+    backgroundObjectLastNumber++;
+
+    //vidas
+    std::string vidasText = std::to_string(vida);
+    vidasNumber =
+        std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), vidasText);
+    vidasNumber->setSize(fontWidth * static_cast<int>(vidasText.size()), fontHeight);
+    vidasNumber->setPosition(300, 10);
+    vidasNumber->attachToCamera(false);
+    addObject(vidasNumber);
+    backgroundObjectLastNumber++;
+
     // stage
-    std::string stageTextConv = "ETAPA " + std::to_string(stage);
+    std::string stageTextConv = "Fase " + std::to_string(stage);
     auto stageText =
         std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), stageTextConv);
     stageText->setSize(fontWidth * static_cast<int>(stageTextConv.size()), fontHeight);
@@ -200,15 +221,15 @@ void LevelScene::generateTileMap()
 
 void LevelScene::spawnGrass(const int positionX, const int positionY)
 {
-    if (gameVersion == GameVersion::GAMEVERSION_CARTOON) {
-        auto grass = std::make_shared<SoilGrass>(gameManager->getAssetManager()->getTexture(GameTexture::CartoonGrass),
+    if (stage == 1) {
+        auto grass = std::make_shared<SoilGrass>(gameManager->getAssetManager()->getTexture(GameTexture::Grass),
             gameManager->getRenderer());
         grass->setPosition(positionX, positionY);
         grass->setSize(scaledTileSize, scaledTileSize);
         addObject(grass);
         backgroundObjectLastNumber++;
     }
-    else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
+    else if (stage == 2)
     {
         auto grass = std::make_shared<SoilGrass>(gameManager->getAssetManager()->getTexture(GameTexture::RealGrass),
             gameManager->getRenderer());
@@ -217,7 +238,7 @@ void LevelScene::spawnGrass(const int positionX, const int positionY)
         addObject(grass);
         backgroundObjectLastNumber++;
     }
-    else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+    else if (stage == 3)
     {
         auto grass = std::make_shared<SoilGrass>(gameManager->getAssetManager()->getTexture(GameTexture::CustomGrass),
             gameManager->getRenderer());
@@ -226,8 +247,18 @@ void LevelScene::spawnGrass(const int positionX, const int positionY)
         addObject(grass);
         backgroundObjectLastNumber++;
     }
-    else {
-        auto grass = std::make_shared<SoilGrass>(gameManager->getAssetManager()->getTexture(GameTexture::Grass),
+    else if (stage == 4) 
+    {
+        auto grass = std::make_shared<SoilGrass>(gameManager->getAssetManager()->getTexture(GameTexture::CartoonGrass),
+            gameManager->getRenderer());
+        grass->setPosition(positionX, positionY);
+        grass->setSize(scaledTileSize, scaledTileSize);
+        addObject(grass);
+        backgroundObjectLastNumber++;
+    }
+    else 
+    {
+        auto grass = std::make_shared<SoilGrass>(gameManager->getAssetManager()->getTexture(GameTexture::CustomGrass),
             gameManager->getRenderer());
         grass->setPosition(positionX, positionY);
         grass->setSize(scaledTileSize, scaledTileSize);
@@ -249,15 +280,15 @@ void LevelScene::spawnMetal(const int positionX, const int positionY)
 
 void LevelScene::spawnBrick(const int positionX, const int positionY)
 {
-    //auto brick = std::make_shared<Sprite>(gameManager->getAssetManager()->getTexture(GameTexture::Brick), gameManager->getRenderer());
-    if (gameVersion == GameVersion::GAMEVERSION_CARTOON) {
-        auto brick = std::make_shared<WallBrick>(gameManager->getAssetManager()->getTexture(GameTexture::CartoonBrick), gameManager->getRenderer());
+    
+    if (stage == 1) {
+        auto brick = std::make_shared<WallBrick>(gameManager->getAssetManager()->getTexture(GameTexture::Brick), gameManager->getRenderer());
         brick->setPosition(positionX, positionY);
         brick->setSize(scaledTileSize, scaledTileSize);
         addObject(brick);
         collisions.push_back(std::make_pair(GameTile::Brick, brick));
     }
-    else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
+    else if (stage == 2)
     {
         auto brick = std::make_shared<WallBrick>(gameManager->getAssetManager()->getTexture(GameTexture::RealBrick), gameManager->getRenderer());
         brick->setPosition(positionX, positionY);
@@ -265,7 +296,7 @@ void LevelScene::spawnBrick(const int positionX, const int positionY)
         addObject(brick);
         collisions.push_back(std::make_pair(GameTile::Brick, brick));
     }
-    else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+    else if (stage == 3)
     {
         auto brick = std::make_shared<WallBrick>(gameManager->getAssetManager()->getTexture(GameTexture::CustomBrick), gameManager->getRenderer());
         brick->setPosition(positionX, positionY);
@@ -273,9 +304,17 @@ void LevelScene::spawnBrick(const int positionX, const int positionY)
         addObject(brick);
         collisions.push_back(std::make_pair(GameTile::Brick, brick));
     }
+    else if (stage == 4) 
+    {
+        auto brick = std::make_shared<WallBrick>(gameManager->getAssetManager()->getTexture(GameTexture::CartoonBrick), gameManager->getRenderer());
+        brick->setPosition(positionX, positionY);
+        brick->setSize(scaledTileSize, scaledTileSize);
+        addObject(brick);
+        collisions.push_back(std::make_pair(GameTile::Brick, brick));
+    }
     else 
     {
-        auto brick = std::make_shared<WallBrick>(gameManager->getAssetManager()->getTexture(GameTexture::Brick), gameManager->getRenderer());
+        auto brick = std::make_shared<WallBrick>(gameManager->getAssetManager()->getTexture(GameTexture::CustomBrick), gameManager->getRenderer());
         brick->setPosition(positionX, positionY);
         brick->setSize(scaledTileSize, scaledTileSize);
         addObject(brick);
@@ -286,18 +325,9 @@ void LevelScene::spawnBrick(const int positionX, const int positionY)
 
 void LevelScene::spawnStone(const int positionX, const int positionY)
 {
-    //std::shared_ptr<BorderDecoratorWall> stone;
-    //auto stone = std::make_shared<BorderDecoratorWall>(
-   /* shared_ptr<BorderDecoratorWall> stone (new BorderDecoratorWall(
-        gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer(), (Wall*)(
-            std::shared_ptr<WallStone>(new WallStone(
-                gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer()
-                )).get()
-            )
-    ));*/
-    //GameActor* stone = new ShineDecoratorWall(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer(), new BorderDecoratorWall(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer(), new WallStone(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer())));
-    if (gameVersion == GameVersion::GAMEVERSION_CARTOON) {
-        auto stone = std::make_shared<WallStone>(gameManager->getAssetManager()->getTexture(GameTexture::CartoonStone), gameManager->getRenderer());
+
+    if (stage == 1) {
+        auto stone = std::make_shared<WallStone>(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer());
         stone->setPosition(positionX, positionY);
         stone->setSize(scaledTileSize, scaledTileSize);
         std::shared_ptr<GameActor> temp(stone);
@@ -305,7 +335,7 @@ void LevelScene::spawnStone(const int positionX, const int positionY)
         collisions.push_back(std::make_pair(GameTile::Stone, temp));
         backgroundObjectLastNumber++;
     }
-    else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
+    else if (stage == 2)
     {
         auto stone = std::make_shared<WallStone>(gameManager->getAssetManager()->getTexture(GameTexture::RealStone), gameManager->getRenderer());
         stone->setPosition(positionX, positionY);
@@ -315,7 +345,7 @@ void LevelScene::spawnStone(const int positionX, const int positionY)
         collisions.push_back(std::make_pair(GameTile::Stone, temp));
         backgroundObjectLastNumber++;
     }
-    else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+    else if (stage == 3)
     {
         auto stone = std::make_shared<WallStone>(gameManager->getAssetManager()->getTexture(GameTexture::CustomStone), gameManager->getRenderer());
         stone->setPosition(positionX, positionY);
@@ -325,8 +355,18 @@ void LevelScene::spawnStone(const int positionX, const int positionY)
         collisions.push_back(std::make_pair(GameTile::Stone, temp));
         backgroundObjectLastNumber++;
     }
+    else if (stage == 4)
+    {
+        auto stone = std::make_shared<WallStone>(gameManager->getAssetManager()->getTexture(GameTexture::CartoonStone), gameManager->getRenderer());
+        stone->setPosition(positionX, positionY);
+        stone->setSize(scaledTileSize, scaledTileSize);
+        std::shared_ptr<GameActor> temp(stone);
+        addObject(temp);
+        collisions.push_back(std::make_pair(GameTile::Stone, temp));
+        backgroundObjectLastNumber++;
+    }
     else {
-        auto stone = std::make_shared<WallStone>(gameManager->getAssetManager()->getTexture(GameTexture::Stone), gameManager->getRenderer());
+        auto stone = std::make_shared<WallStone>(gameManager->getAssetManager()->getTexture(GameTexture::CustomStone), gameManager->getRenderer());
         stone->setPosition(positionX, positionY);
         stone->setSize(scaledTileSize, scaledTileSize);
         std::shared_ptr<GameActor> temp(stone);
@@ -335,18 +375,7 @@ void LevelScene::spawnStone(const int positionX, const int positionY)
         backgroundObjectLastNumber++;
     }
     
-}
-
-//void LevelScene::spawnWallPacman(const int positionX, const int positionY, Tile* _tile)
-//{
-//    auto wallPacman = std::make_shared<WallPacmanAdapter>(gameManager->getAssetManager()->getTexture(GameTexture::WallPacman), gameManager->getRenderer(), _tile);
-//    wallPacman->setPosition(positionX, positionY);
-//    wallPacman->setSDLPosition(positionX, positionY);
-//    wallPacman->setSize(scaledTileSize, scaledTileSize);
-//    addObject(wallPacman);
-//    collisions.push_back(std::make_pair(GameTile::Stone, wallPacman));
-//    backgroundObjectLastNumber++;
-//}
+ }
 
 
 void LevelScene::spawnPlayer(const int positionX, const int positionY)
@@ -360,21 +389,17 @@ void LevelScene::spawnPlayer(const int positionX, const int positionY)
     }
     else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
     {
+        
         player = std::make_unique<Player>(gameManager->getAssetManager()->getTexture(GameTexture::Player5), gameManager->getRenderer());
-        //player = std::make_unique<ClasicoPlayer>(gameManager->getAssetManager()->getTexture(GameTexture::Player5), gameManager->getRenderer());
-        //player = dynamic_pointer_cast<Player>(factory->CreatePlayer(positionX, positionY));
-
         player->setPosition(positionX, positionY);
         player->setSize(scaledTileSize, scaledTileSize);
         player->setClip(tileSize, tileSize, tileSize * 4, 0);
         addObject(player);
+        //player-> speed = 0.01f;
     }
     else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
     {
         player = std::make_unique<Player>(gameManager->getAssetManager()->getTexture(GameTexture::Player6), gameManager->getRenderer());
-        //player = std::make_unique<ClasicoPlayer>(gameManager->getAssetManager()->getTexture(GameTexture::Player5), gameManager->getRenderer());
-        //player = dynamic_pointer_cast<Player>(factory->CreatePlayer(positionX, positionY));
-
         player->setPosition(positionX, positionY);
         player->setSize(scaledTileSize, scaledTileSize);
         player->setClip(tileSize, tileSize, tileSize * 4, 0);
@@ -384,42 +409,115 @@ void LevelScene::spawnPlayer(const int positionX, const int positionY)
 
 void LevelScene::spawnEnemy(GameTexture texture, AIType type, const int positionX, const int positionY)
 {
-    if (gameVersion == GameVersion::GAMEVERSION_CARTOON || gameVersion == GameVersion::GAMEVERSION_CLASIC)
+    if (stage == 1)
     {
-        std::shared_ptr<Enemy> enemy;
-
-        enemy = dynamic_pointer_cast<Enemy>(factory->CreateEnemy(type, positionX, positionY));
-        addObject(enemy);
-        enemies.push_back(enemy);
-
+        auto enemy1 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy1), gameManager->getRenderer());
+        enemy1->setPosition(positionX, positionY);
+        enemy1->setSize(scaledTileSize, scaledTileSize);
+        enemy1->setAIType(type);
+        addObject(enemy1);
+        enemies.push_back(enemy1);
     }
-    else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
-    {
-        /*std::shared_ptr<Enemy> enemy;
-        enemy = std::make_unique<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy1), gameManager->getRenderer());*/
-        auto enemy = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy4), gameManager->getRenderer());
-        //enemy = dynamic_pointer_cast<Enemy>(factory->CreateEnemy(type, positionX, positionY));
 
-        
-        //auto enemy = std::make_shared<ClasicoEnemy>(gameManager->getAssetManager()->getTexture(texture), gameManager->getRenderer());
-        enemy->setPosition(positionX, positionY);
-        enemy->setSize(scaledTileSize, scaledTileSize);
-        enemy->setAIType(type);
-        addObject(enemy);
-        enemies.push_back(enemy);
+    else if (stage == 2)
+    {
+        auto enemy1 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy1), gameManager->getRenderer());
+        enemy1->setPosition(positionX, positionY);
+        enemy1->setSize(scaledTileSize, scaledTileSize);
+        enemy1->setAIType(type);
+        addObject(enemy1);
+        enemies.push_back(enemy1);
+
+
+        auto enemy2 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy2), gameManager->getRenderer());
+        enemy2->setPosition(positionX, positionY);
+        enemy2->setSize(scaledTileSize, scaledTileSize);
+        enemy2->setAIType(type);
+        addObject(enemy2);
+        enemies.push_back(enemy2);
     }
-    else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
+    else if (stage == 3)
     {
-        auto enemy = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy2), gameManager->getRenderer());
-        //enemy = dynamic_pointer_cast<Enemy>(factory->CreateEnemy(type, positionX, positionY));
+        auto enemy1 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy1), gameManager->getRenderer());
+        enemy1->setPosition(positionX, positionY);
+        enemy1->setSize(scaledTileSize, scaledTileSize);
+        enemy1->setAIType(type);
+        addObject(enemy1);
+        enemies.push_back(enemy1);
 
+        auto enemy2 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy2), gameManager->getRenderer());
+        enemy2->setPosition(positionX, positionY);
+        enemy2->setSize(scaledTileSize, scaledTileSize);
+        enemy2->setAIType(type);
+        addObject(enemy2);
+        enemies.push_back(enemy2);
 
-        //auto enemy = std::make_shared<ClasicoEnemy>(gameManager->getAssetManager()->getTexture(texture), gameManager->getRenderer());
-        enemy->setPosition(positionX, positionY);
-        enemy->setSize(scaledTileSize, scaledTileSize);
-        enemy->setAIType(type);
-        addObject(enemy);
-        enemies.push_back(enemy);
+        auto enemy3 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy4), gameManager->getRenderer());
+        enemy3->setPosition(positionX, positionY);
+        enemy3->setSize(scaledTileSize, scaledTileSize);
+        enemy3->setAIType(type);
+        addObject(enemy3);
+        enemies.push_back(enemy3);
+    }
+    else if (stage == 4)
+    {
+        auto enemy1 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy1), gameManager->getRenderer());
+        enemy1->setPosition(positionX, positionY);
+        enemy1->setSize(scaledTileSize, scaledTileSize);
+        enemy1->setAIType(type);
+        addObject(enemy1);
+        enemies.push_back(enemy1);
+
+        auto enemy2 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy2), gameManager->getRenderer());
+        enemy2->setPosition(positionX, positionY);
+        enemy2->setSize(scaledTileSize, scaledTileSize);
+        enemy2->setAIType(type);
+        addObject(enemy2);
+        enemies.push_back(enemy2);
+
+        auto enemy3 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy4), gameManager->getRenderer());
+        enemy3->setPosition(positionX, positionY);
+        enemy3->setSize(scaledTileSize, scaledTileSize);
+        enemy3->setAIType(type);
+        addObject(enemy3);
+        enemies.push_back(enemy3);
+
+        auto enemy4 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy3), gameManager->getRenderer());
+        enemy4->setPosition(positionX, positionY);
+        enemy4->setSize(scaledTileSize, scaledTileSize);
+        enemy4->setAIType(type);
+        addObject(enemy4);
+        enemies.push_back(enemy4);
+    }
+    else 
+    {
+        auto enemy1 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy1), gameManager->getRenderer());
+        enemy1->setPosition(positionX, positionY);
+        enemy1->setSize(scaledTileSize, scaledTileSize);
+        enemy1->setAIType(type);
+        addObject(enemy1);
+        enemies.push_back(enemy1);
+
+        auto enemy2 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy2), gameManager->getRenderer());
+        enemy2->setPosition(positionX, positionY);
+        enemy2->setSize(scaledTileSize, scaledTileSize);
+        enemy2->setAIType(type);
+        addObject(enemy2);
+        enemies.push_back(enemy2);
+
+        auto enemy3 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy4), gameManager->getRenderer());
+        enemy3->setPosition(positionX, positionY);
+        enemy3->setSize(scaledTileSize, scaledTileSize);
+        enemy3->setAIType(type);
+        addObject(enemy3);
+        enemies.push_back(enemy3);
+
+        auto enemy4 = std::make_shared<Enemy>(gameManager->getAssetManager()->getTexture(GameTexture::Enemy3), gameManager->getRenderer());
+        enemy4->setPosition(positionX, positionY);
+        enemy4->setSize(scaledTileSize, scaledTileSize);
+        enemy4->setAIType(type);
+        addObject(enemy4);
+        enemies.push_back(enemy4);
     }
     
 }
@@ -428,6 +526,7 @@ void LevelScene::generateEnemies()
 {
     // we need enemy in random tile
     const auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+
     auto randCount = std::bind(std::uniform_int_distribution<int>(minEnemiesOnLevel, maxEnemiesOnLevel),
         std::mt19937(static_cast<unsigned int>(seed)));
     auto randType = std::bind(std::uniform_int_distribution<int>(0, 1),
@@ -439,7 +538,9 @@ void LevelScene::generateEnemies()
     auto randCellY = std::bind(std::uniform_int_distribution<int>(0, tileArrayWidth - 1),
         std::mt19937(static_cast<unsigned int>(seed)));
     // start enemies spawn
-    for (int i = 0; i < randCount(); i++)
+
+ 
+    for (int i = 0; i < stage; i++)
     {
         // try to find suitable tile
         int cellX = randCellX();
@@ -469,6 +570,13 @@ void LevelScene::spawnItem(GameTexture texture, const int positionX, const int p
         item->setSize(scaledTileSize, scaledTileSize);
         addObject(item);
         items.push_back(item);
+
+        auto itemb = std::make_shared<Item>(gameManager->getAssetManager()->getTexture(GameTexture::RayoItem), gameManager->getRenderer());
+
+        itemb->setPosition(positionX, positionY);
+        itemb->setSize(scaledTileSize, scaledTileSize);
+        addObject(itemb);
+        items.push_back(itemb);
     }
 
     else if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
@@ -530,6 +638,7 @@ void LevelScene::generateItems()
         {
             spawnItem(GameTexture::SkullItem,
             fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
+
         }
         else if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
         {
@@ -964,8 +1073,17 @@ void LevelScene::updateScore()
     scoreNumber->setSize(static_cast<int>(timerNumber->getWidth() / 3.0f) *
                                 static_cast<int>(scoreText.size()),
                             scoreNumber->getHeight());
-    scoreNumber->setPosition(gameManager->getWindowWidth() / 2 - scoreNumber->getWidth() / 2,
-                                scoreNumber->getPositionY());
+    scoreNumber->setPosition(200, 10);
+}
+
+void LevelScene::updateVida()
+{
+    std::string vidasText = std::to_string(vida);
+    vidasNumber->setText(vidasText);
+    vidasNumber->setSize(static_cast<int>(timerNumber->getWidth() / 3.0f) *
+        static_cast<int>(vidasText.size()),
+        vidasNumber->getHeight());
+    vidasNumber->setPosition(300, 10);
 }
 
 void LevelScene::updatePlayerCollision()
@@ -979,7 +1097,7 @@ void LevelScene::updatePlayerCollision()
     {
         return;
     }
-    // set width to smaller size for easer path
+    // set width to smaller size for easer pa th
     SDL_Rect playerRect = player->getRect();
     playerRect.w = static_cast<int>(playerRect.w * 0.5);
     playerRect.h = static_cast<int>(playerRect.h * 0.5);
@@ -1003,6 +1121,7 @@ void LevelScene::updatePlayerCollision()
                 isWin = true;
                 score += scoreRewardForStage;
                 gameOverTimer = winTimerStart;
+  
             }
         }
     }
@@ -1040,7 +1159,15 @@ void LevelScene::updateEnemiesCollision()
             playerRect.h = static_cast<int>(playerRect.h * 0.2);
             if(isCollisionDetected(playerRect, enemy->getRect()))
             {
-                // player killed by enemy
+                vida = vida - 1;
+                std::cout << vida << std::endl;
+                removeObject(player);
+                spawnPlayer(fieldPositionX + playerStartX * scaledTileSize, fieldPositionY + playerStartY * scaledTileSize);
+                updateVida();
+            }
+
+            if (vida == 0)
+            {
                 removeObject(player);
                 player = nullptr;
                 gameOver();
@@ -1155,7 +1282,7 @@ void LevelScene::updateBangsCollision()
             ++itEnemies;
         }
         // check player
-        if(player != nullptr)
+        /*if(player != nullptr)
         {
             SDL_Rect playerRect = player->getRect();
             playerRect.w = static_cast<int>(playerRect.w * 0.2f);
@@ -1166,6 +1293,32 @@ void LevelScene::updateBangsCollision()
                 player = nullptr;
                 gameOver();
             }
+        }*/
+
+        // check player
+        if (player != nullptr)
+        {
+            //int vida = 3;
+            SDL_Rect playerRect = player->getRect();
+            playerRect.w = static_cast<int>(playerRect.w * 0.2f);
+            playerRect.h = static_cast<int>(playerRect.h * 0.2f);
+
+
+            if (isCollisionDetected(playerRect, bang->getRect()))
+            {
+                vida = vida - 1;
+                std::cout << vida << std::endl;
+                removeObject(player);
+                spawnPlayer(fieldPositionX + playerStartX * scaledTileSize, fieldPositionY + playerStartY * scaledTileSize);
+                updateVida();
+            }
+            if (vida == 0)
+            {
+                removeObject(player);
+                player = nullptr;
+                gameOver();
+            }
+            
         }
     }
 }
