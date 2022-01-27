@@ -180,7 +180,6 @@
     <ClCompile Include="Factories\FactoryGameRealista.cpp" />
     <ClCompile Include="Entities\Item.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Scenes\GameLevelScene.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Managers\AssetManager.cpp" />
     <ClCompile Include="Managers\SceneManager.cpp" />
@@ -241,10 +240,9 @@
     <ClInclude Include="GameAITypes.h" />
     <ClInclude Include="Entities\Item.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Scenes\GameLevelScene.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameTextures.h" />
-    <ClInclude Include="GameVersions.h" />
+    <ClInclude Include="Skins.h" />
     <ClInclude Include="Managers\AssetManager.h" />
     <ClInclude Include="Managers\SceneManager.h" />
     <ClInclude Include="Scenes\GameOverScene.h" />

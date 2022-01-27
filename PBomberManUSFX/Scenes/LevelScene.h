@@ -21,7 +21,7 @@
 #include "../Factories/FactoryGameClasico.h"
 #include "../Factories/FactoryGameCartoon.h"
 #include "../Entities/ClasicoPlayer.h"
-#include "../GameVersions.h"
+#include "../Skins.h"
 #include "../GameTextures.h"
 
 #include "../Adapters/WallPacman.h"
@@ -48,7 +48,7 @@ public:
         * @param stage - stage number
         */
     LevelScene(GameManager* game, const unsigned int _stage, const unsigned int _prevScore);
-    LevelScene(GameManager* game, GameVersion _gameVersion, const unsigned int _stage, const unsigned int _prevScore);
+    LevelScene(GameManager* game, Skin _skin, const unsigned int _stage, const unsigned int _prevScore);
     
     /**
         * @brief Catch SDL2 events
@@ -179,7 +179,7 @@ private:
     bool isPaused = false;
     bool isWin = false;
     // variables
-    unsigned int gameVersion = GAMEVERSION_CLASIC;
+    unsigned int skins = SKIN_JOSH;
     unsigned int score = 0;
     unsigned int stage = 0;
 

@@ -126,9 +126,6 @@
     <ClCompile Include="Builder\BuilderClasico.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Scenes\GameLevelScene.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="Entities\Soil.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
@@ -296,7 +293,7 @@
     <ClInclude Include="Entities\ClasicoPlayer.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="GameVersions.h">
+    <ClInclude Include="Skins.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Builder\Builder.h">
@@ -309,9 +306,6 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Builder\BuilderClasico.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\GameLevelScene.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Entities\Soil.h">

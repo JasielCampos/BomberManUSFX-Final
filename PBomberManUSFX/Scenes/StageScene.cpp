@@ -18,8 +18,8 @@ StageScene::StageScene(GameManager* _gameManager, const unsigned int _level, con
     addObject(text);
 }
 
-StageScene::StageScene(GameManager* _gameManager, GameVersion _gameVersion, const unsigned int _level, const unsigned int _score)
-    : Scene(_gameManager), gameVersion(_gameVersion), stage(_level), score(_score)
+StageScene::StageScene(GameManager* _gameManager, Skin _skin, const unsigned int _level, const unsigned int _score)
+    : Scene(_gameManager), skin (_skin), stage(_level), score(_score)
 {
     // stage text
     auto text = std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(),
@@ -39,7 +39,7 @@ void StageScene::update(const unsigned int _delta)
     if(untilNextSceneTimer >= sceneTimer)
     {
         untilNextSceneTimer = 0;
-        gameManager->getSceneManager()->addScene("level", std::make_shared<LevelScene>(gameManager, gameVersion, stage, score));
+        gameManager->getSceneManager()->addScene("level", std::make_shared<LevelScene>(gameManager, skin, stage, score));
         gameManager->getSceneManager()->activateScene("level");
         gameManager->getSceneManager()->removeScene("stage");
     }

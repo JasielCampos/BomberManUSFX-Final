@@ -9,7 +9,7 @@
 #include <unordered_map>
 
 #include "../GameTextures.h"
-#include "../GameVersions.h"
+#include "../Skins.h"
 /**
     * @brief Enumeration for Texture
     *
@@ -82,6 +82,7 @@ class AssetManager
         * @return std::shared_ptr<TTF_Font> - loaded font
         */
     std::shared_ptr<TTF_Font> getFont() const;
+    std::shared_ptr<TTF_Font> getFont1() const;
     /**
         * @brief Get textures
         *
@@ -111,6 +112,7 @@ class AssetManager
         *
         */
     void loadFont();
+    void loadFont1();
     /**
         * @brief load textures
         *
@@ -135,6 +137,7 @@ class AssetManager
     void loadSound(SoundEnum sound, const std::string& filePath);
 
     std::shared_ptr<TTF_Font> font = nullptr;                                          // font
+    std::shared_ptr<TTF_Font> font1 = nullptr;
     std::unordered_map<GameTexture, std::shared_ptr<SDL_Texture>, EnumClassHash> textures; // map of textures
     std::unordered_map<MusicEnum, std::shared_ptr<Mix_Music>, EnumClassHash> musics;       // map of music
     std::unordered_map<SoundEnum, std::shared_ptr<Mix_Chunk>, EnumClassHash> sounds;       // map of sounds

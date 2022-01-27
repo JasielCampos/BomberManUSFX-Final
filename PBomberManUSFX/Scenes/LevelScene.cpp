@@ -58,16 +58,16 @@ LevelScene::LevelScene(GameManager* _gameManager, const unsigned int _stage, con
     updateLevelTimer();
 }
 
-LevelScene::LevelScene(GameManager* _gameManager, GameVersion _gameVersion, const unsigned int _stage, const unsigned int prevScore)
-    : Scene(_gameManager), gameVersion(_gameVersion), score(prevScore), stage(_stage)
+LevelScene::LevelScene(GameManager* _gameManager, Skin _skin, const unsigned int _stage, const unsigned int prevScore)
+    : Scene(_gameManager), skins(_skin), score(prevScore), stage(_stage)
 {
     
-    if (gameVersion == GameVersion::GAMEVERSION_CARTOON) {
+    /*if (gameVersion == GameVersion::GAMEVERSION_CARTOON) {
         factory = new FactoryGameCartoon();
     }
     else if (gameVersion == GameVersion::GAMEVERSION_CLASIC) {
         factory = new FactoryGameClasico();
-    }
+    }*/
     /*else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM) {
         factory = new FactoryGamePersonalizado();
     }*/
@@ -179,44 +179,44 @@ void LevelScene::spawnTextObjects()
 void LevelScene::generateTileMap()
 {
     // we need random bricks
-    const auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-    auto randBrick = std::bind(std::uniform_int_distribution<int>(0, brickSpawnRandomize),
-                                std::mt19937(static_cast<unsigned int>(seed)));
+    //const auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    //auto randBrick = std::bind(std::uniform_int_distribution<int>(0, brickSpawnRandomize),
+    //                            std::mt19937(static_cast<unsigned int>(seed)));
 
-    // iterate every tile
-    for(int i = 0; i < static_cast<int>(tileArrayHeight); i++)
-    {
-        for(int j = 0; j < static_cast<int>(tileArrayWidth); j++)
-        {
-            tiles[i][j] = baseTiles[i][j];
-            // generate random bricks
-            if(tiles[i][j] == GameTile::Grass)
-            {
-                if(randBrick() == 0)
-                {
-                    tiles[i][j] = GameTile::Brick;
-                }
-            }
-            // spawn brick and grass
-            if(tiles[i][j] == GameTile::Brick)
-            {
-                spawnGrass(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
-                spawnBrick(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
-            }
-            // spawn grass
-            if(tiles[i][j] == GameTile::Grass || tiles[i][j] == GameTile::EmptyGrass)
-            {
-                spawnGrass(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
-            }
-            // spawn stone
-            if(tiles[i][j] == GameTile::Stone)
-            {
-                spawnStone(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
-                //spawnWallPacman(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
-                //spawnMetal(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
-            }
-        }
-    }
+    //// iterate every tile
+    //for(int i = 0; i < static_cast<int>(tileArrayHeight); i++)
+    //{
+    //    for(int j = 0; j < static_cast<int>(tileArrayWidth); j++)
+    //    {
+    //        tiles[i][j] = baseTiles[i][j];
+    //        // generate random bricks
+    //        if(tiles[i][j] == GameTile::Grass)
+    //        {
+    //            if(randBrick() == 0)
+    //            {
+    //                tiles[i][j] = GameTile::Brick;
+    //            }
+    //        }
+    //        // spawn brick and grass
+    //        if(tiles[i][j] == GameTile::Brick)
+    //        {
+    //            spawnGrass(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
+    //            spawnBrick(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
+    //        }
+    //        // spawn grass
+    //        if(tiles[i][j] == GameTile::Grass || tiles[i][j] == GameTile::EmptyGrass)
+    //        {
+    //            spawnGrass(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
+    //        }
+    //        // spawn stone
+    //        if(tiles[i][j] == GameTile::Stone)
+    //        {
+    //            spawnStone(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
+    //            //spawnWallPacman(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
+    //            //spawnMetal(fieldPositionX + j * scaledTileSize, fieldPositionY + i * scaledTileSize);
+    //        }
+    //    }
+    //}
 }
 
 void LevelScene::spawnGrass(const int positionX, const int positionY)
@@ -382,14 +382,44 @@ void LevelScene::spawnPlayer(const int positionX, const int positionY)
 {
     // spawn player
 
-    if (gameVersion == GameVersion::GAMEVERSION_CARTOON || gameVersion == GameVersion::GAMEVERSION_CLASIC)
+    if (skins == Skin::SKIN_JOSH)
     {
-        player = dynamic_pointer_cast<Player>(factory->CreatePlayer(positionX, positionY));
+        player = std::make_unique<Player>(gameManager->getAssetManager()->getTexture(GameTexture::Player1), gameManager->getRenderer());
+        player->setPosition(positionX, positionY);
+        player->setSize(scaledTileSize, scaledTileSize);
+        player->setClip(tileSize, tileSize, tileSize * 4, 0);
         addObject(player);
+        //player-> speed = 0.01f;
     }
-    else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+    else if (skins == Skin::SKIN_CLASSIC)
     {
-        
+        player = std::make_unique<Player>(gameManager->getAssetManager()->getTexture(GameTexture::Player2), gameManager->getRenderer());
+        player->setPosition(positionX, positionY);
+        player->setSize(scaledTileSize, scaledTileSize);
+        player->setClip(tileSize, tileSize, tileSize * 4, 0);
+        addObject(player);
+        //player-> speed = 0.01f;
+    }
+    else if (skins == Skin::SKIN_TYLER)
+    {
+        player = std::make_unique<Player>(gameManager->getAssetManager()->getTexture(GameTexture::Player3), gameManager->getRenderer());
+        player->setPosition(positionX, positionY);
+        player->setSize(scaledTileSize, scaledTileSize);
+        player->setClip(tileSize, tileSize, tileSize * 4, 0);
+        addObject(player);
+        //player-> speed = 0.01f;
+    }
+    else if (skins == Skin::SKIN_BRUNO)
+    {
+        player = std::make_unique<Player>(gameManager->getAssetManager()->getTexture(GameTexture::Player4), gameManager->getRenderer());
+        player->setPosition(positionX, positionY);
+        player->setSize(scaledTileSize, scaledTileSize);
+        player->setClip(tileSize, tileSize, tileSize * 4, 0);
+        addObject(player);
+        //player-> speed = 0.01f;
+    }
+    else if (skins == Skin::SKIN_KING)
+    {
         player = std::make_unique<Player>(gameManager->getAssetManager()->getTexture(GameTexture::Player5), gameManager->getRenderer());
         player->setPosition(positionX, positionY);
         player->setSize(scaledTileSize, scaledTileSize);
@@ -397,13 +427,14 @@ void LevelScene::spawnPlayer(const int positionX, const int positionY)
         addObject(player);
         //player-> speed = 0.01f;
     }
-    else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
+    else if (skins == Skin::SKIN_JASS)
     {
         player = std::make_unique<Player>(gameManager->getAssetManager()->getTexture(GameTexture::Player6), gameManager->getRenderer());
         player->setPosition(positionX, positionY);
         player->setSize(scaledTileSize, scaledTileSize);
         player->setClip(tileSize, tileSize, tileSize * 4, 0);
         addObject(player);
+        //player-> speed = 0.01f;
     }
 }
 
@@ -562,7 +593,7 @@ void LevelScene::generateEnemies()
 
 void LevelScene::spawnItem(GameTexture texture, const int positionX, const int positionY)
 {
-    if (gameVersion == GameVersion::GAMEVERSION_CARTOON)
+    /*if (gameVersion == GameVersion::GAMEVERSION_CARTOON)
     {
         auto item = std::make_shared<Item>(gameManager->getAssetManager()->getTexture(GameTexture::SkullItem), gameManager->getRenderer());
         
@@ -570,13 +601,6 @@ void LevelScene::spawnItem(GameTexture texture, const int positionX, const int p
         item->setSize(scaledTileSize, scaledTileSize);
         addObject(item);
         items.push_back(item);
-
-        auto itemb = std::make_shared<Item>(gameManager->getAssetManager()->getTexture(GameTexture::RayoItem), gameManager->getRenderer());
-
-        itemb->setPosition(positionX, positionY);
-        itemb->setSize(scaledTileSize, scaledTileSize);
-        addObject(itemb);
-        items.push_back(itemb);
     }
 
     else if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
@@ -606,56 +630,56 @@ void LevelScene::spawnItem(GameTexture texture, const int positionX, const int p
         item->setSize(scaledTileSize, scaledTileSize);
         addObject(item);
         items.push_back(item);
-    }
+    }*/
 }
 
 
 
 void LevelScene::generateItems()
 {
-    // we need enemy in random tile
-    const auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-    auto randCount = std::bind(std::uniform_int_distribution<int>(minItemsOnLevel, maxItemsOnLevel),
-        std::mt19937(static_cast<unsigned int>(seed)));
+    //// we need enemy in random tile
+    //const auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    //auto randCount = std::bind(std::uniform_int_distribution<int>(minItemsOnLevel, maxItemsOnLevel),
+    //    std::mt19937(static_cast<unsigned int>(seed)));
 
-    auto randCellX = std::bind(std::uniform_int_distribution<int>(0, tileArrayHeight - 1),
-        std::mt19937(static_cast<unsigned int>(seed)));
-    auto randCellY = std::bind(std::uniform_int_distribution<int>(0, tileArrayWidth - 1),
-        std::mt19937(static_cast<unsigned int>(seed)));
-    // start enemies spawn
-    for (int i = 0; i < randCount(); i++)
-    {
-        // try to find suitable tile
-        int cellIX = randCellX();
-        int cellIY = randCellY();
-        while (tiles[cellIX][cellIY] == GameTile::Grass)
-        {
-            cellIX = randCellX();
-            cellIY = randCellY();
-        }
-        // spawn item
-        if (gameVersion == GameVersion::GAMEVERSION_CARTOON) 
-        {
-            spawnItem(GameTexture::SkullItem,
-            fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
+    //auto randCellX = std::bind(std::uniform_int_distribution<int>(0, tileArrayHeight - 1),
+    //    std::mt19937(static_cast<unsigned int>(seed)));
+    //auto randCellY = std::bind(std::uniform_int_distribution<int>(0, tileArrayWidth - 1),
+    //    std::mt19937(static_cast<unsigned int>(seed)));
+    //// start enemies spawn
+    //for (int i = 0; i < randCount(); i++)
+    //{
+    //    // try to find suitable tile
+    //    int cellIX = randCellX();
+    //    int cellIY = randCellY();
+    //    while (tiles[cellIX][cellIY] == GameTile::Grass)
+    //    {
+    //        cellIX = randCellX();
+    //        cellIY = randCellY();
+    //    }
+    //    // spawn item
+    //    if (gameVersion == GameVersion::GAMEVERSION_CARTOON) 
+    //    {
+    //        spawnItem(GameTexture::SkullItem,
+    //        fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
 
-        }
-        else if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
-        {
-            spawnItem(GameTexture::RayoItem,
-                fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
-        }
-        else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
-        {
-            spawnItem(GameTexture::RelojItem,
-                fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
-        }
-        else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
-        {
-            spawnItem(GameTexture::MedalItem,
-                fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
-        }
-    }
+    //    }
+    //    else if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
+    //    {
+    //        spawnItem(GameTexture::RayoItem,
+    //            fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
+    //    }
+    //    else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+    //    {
+    //        spawnItem(GameTexture::RelojItem,
+    //            fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
+    //    }
+    //    else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
+    //    {
+    //        spawnItem(GameTexture::MedalItem,
+    //            fieldPositionX + cellIY * scaledTileSize, fieldPositionY + cellIX * scaledTileSize);
+    //    }
+    //}
 }
 
 void LevelScene::spawnBomb(GameGraphicObject* object)
@@ -1195,49 +1219,49 @@ void LevelScene::updateEnemiesCollision()
 void LevelScene::updateItemsCollision()
 {
     // iterate enemies for collision
-    for (const auto& item : items)
-    {
-        
-        
-        // check for player collision
-        if (player != nullptr)
-        {
-            // set width to smaller size
-            SDL_Rect playerRect = player->getRect();
-            playerRect.w = static_cast<int>(playerRect.w * 0.2);
-            playerRect.h = static_cast<int>(playerRect.h * 0.2);
-            if (isCollisionDetected(playerRect, item->getRect()))
-            {
-                if (gameVersion == GameVersion::GAMEVERSION_CARTOON) 
-                {
-                    // player killed by skullitem
-                    removeObject(player);
-                    player = nullptr;
-                    gameOver();
-                }
-                else if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
-                {
-                    // player aumenta velocidad
-                    removeObject(item);
-                    player->speed = 0.02f;
-                }
-                else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
-                {
-                    // aumenta tiempo tiempo de partida
-                    removeObject(item);
-                    levelTimer= levelTimer + 1000;
-                }
-                else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
-                {
-                    // player cambia de skin
-                    removeObject(item);
-                    gameManager->getSceneManager()->activateScene("you win");
-                }
-                
-            }
-        }
-        
-    }
+    //for (const auto& item : items)
+    //{
+    //    
+    //    
+    //    // check for player collision
+    //    if (player != nullptr)
+    //    {
+    //        // set width to smaller size
+    //        SDL_Rect playerRect = player->getRect();
+    //        playerRect.w = static_cast<int>(playerRect.w * 0.2);
+    //        playerRect.h = static_cast<int>(playerRect.h * 0.2);
+    //        if (isCollisionDetected(playerRect, item->getRect()))
+    //        {
+    //            if (gameVersion == GameVersion::GAMEVERSION_CARTOON) 
+    //            {
+    //                // player killed by skullitem
+    //                removeObject(player);
+    //                player = nullptr;
+    //                gameOver();
+    //            }
+    //            else if (gameVersion == GameVersion::GAMEVERSION_CLASIC)
+    //            {
+    //                // player aumenta velocidad
+    //                removeObject(item);
+    //                player->speed = 0.02f;
+    //            }
+    //            else if (gameVersion == GameVersion::GAMEVERSION_CUSTOM)
+    //            {
+    //                // aumenta tiempo tiempo de partida
+    //                removeObject(item);
+    //                levelTimer= levelTimer + 1000;
+    //            }
+    //            else if (gameVersion == GameVersion::GAMEVERSION_REALISTIC)
+    //            {
+    //                // player cambia de skin
+    //                removeObject(item);
+    //                gameManager->getSceneManager()->activateScene("you win");
+    //            }
+    //            
+    //        }
+    //    }
+    //    
+    //}
 }
 
 void LevelScene::updateBangsCollision()
