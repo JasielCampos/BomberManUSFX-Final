@@ -73,5 +73,5 @@ private:
     
     // const colors for menu selection
     const SDL_Color colorStandard = { 255, 255, 255, 255 };
-    const SDL_Color colorPressed = { 66, 134, 244, 255 };
+    const SDL_Color colorPressed = { 224, 30, 55, 255 };
 };

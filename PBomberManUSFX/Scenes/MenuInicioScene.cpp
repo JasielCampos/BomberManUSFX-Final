@@ -53,31 +53,24 @@ MenuInicioScene::MenuInicioScene(GameManager* _gameManager) : Scene(_gameManager
     background->setSize(gameManager->getWindowWidth() - 60, static_cast<int>(gameManager->getWindowHeight() / 1.5f) - 20);
     addObject(background);
 
-    // start menu
-   /* startText = std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), "INICIO");
-    startText->setColor(colorPressed);
-    startText->setSize(static_cast<int>(gameManager->getWindowWidth() / 4.0f), static_cast<int>(gameManager->getWindowHeight() / 20.0f));
-    startText->setPosition(static_cast<int>(gameManager->getWindowWidth() / 2.0f - startText->getWidth() / 2.0f), background->getHeight() + 60);
-    addObject(startText);*/
-
     startText = std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), "START");
     startText->setColor(colorPressed);
     startText->setSize(static_cast<int>(gameManager->getWindowWidth() / 4.0f), static_cast<int>(gameManager->getWindowHeight() / 20.0f));
-    startText->setPosition(static_cast<int>(gameManager->getWindowWidth() / 2.0f - startText->getWidth() / 2.0f), background->getHeight() + 20);
+    startText->setPosition(static_cast<int>(gameManager->getWindowWidth() / 2.0f - startText->getWidth() / 2.0f), background->getHeight() + 25);
     addObject(startText);
 
     creditsText = std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), "CREDITS");
     creditsText->setColor(colorStandard);
     creditsText->setSize(static_cast<int>(gameManager->getWindowWidth() / 4.0f), static_cast<int>(gameManager->getWindowHeight() / 20.0f));
-    creditsText->setPosition(static_cast<int>(gameManager->getWindowWidth() / 2.0f - startText->getWidth() / 2.0f), background->getHeight() + 50);
+    creditsText->setPosition(static_cast<int>(gameManager->getWindowWidth() / 2.0f - startText->getWidth() / 2.0f), background->getHeight() + 80);
     addObject(creditsText);
 
    
 
     // exit menu
-    exitText = std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), "EXIT");
+    exitText = std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), " EXIT");
     exitText->setSize(static_cast<int>(gameManager->getWindowWidth() / 5.0f), static_cast<int>(gameManager->getWindowHeight() / 20.0f));
-    exitText->setPosition(startText->getPositionX(), creditsText->getPositionY() + exitText->getHeight() + 40);
+    exitText->setPosition(startText->getPositionX(), creditsText->getPositionY() + exitText->getHeight() + 30);
     addObject(exitText);
 
     gameManager->getSceneManager()->addScene("gameover", std::make_shared<GameOverScene>(gameManager));
@@ -139,7 +132,7 @@ void MenuInicioScene::onMenuItemSelect()
         startText->setColor(colorPressed);
         break;
     case MenuItemI::Credits:
-        startText->setColor(colorPressed);
+        creditsText->setColor(colorPressed);
         break;
     case MenuItemI::Exit:
         exitText->setColor(colorPressed);
