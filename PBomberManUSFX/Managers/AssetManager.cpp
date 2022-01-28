@@ -12,15 +12,15 @@ void AssetManager::load(SDL_Renderer* renderer)
     // load textures
     loadTexture(renderer, GameTexture::MenuBack, "assets/title.png");
     loadTexture(renderer, GameTexture::Metal, "resources/muro_metal.jpg");
-    loadTexture(renderer, GameTexture::Stone, "resources/muro_piedra_01.png");
+    loadTexture(renderer, GameTexture::Stone, "resources/customstone.png");
     loadTexture(renderer, GameTexture::CartoonStone, "resources/cartoonstone.png");
     loadTexture(renderer, GameTexture::RealStone, "resources/realstone.png");
     loadTexture(renderer, GameTexture::CustomStone, "resources/customstone.png");
-    loadTexture(renderer, GameTexture::Grass, "resources/suelo_cesped_01.png");
+    loadTexture(renderer, GameTexture::Grass, "resources/classicgrass.png");
     loadTexture(renderer, GameTexture::RealGrass, "resources/realgrass.png");
     loadTexture(renderer, GameTexture::CartoonGrass, "resources/cartoongrass.png");
     loadTexture(renderer, GameTexture::CustomGrass, "resources/customgrass.png");
-    loadTexture(renderer, GameTexture::Brick, "resources/muro_ceramica_01.png");
+    loadTexture(renderer, GameTexture::Brick, "resources/cartoonbrick.png");
     loadTexture(renderer, GameTexture::CartoonBrick, "resources/cartoonbrick.png");
     loadTexture(renderer, GameTexture::CustomBrick, "resources/custombrick.png");
     loadTexture(renderer, GameTexture::RealBrick, "resources/realbrick.png");
