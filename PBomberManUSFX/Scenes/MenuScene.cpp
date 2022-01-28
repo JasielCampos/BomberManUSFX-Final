@@ -54,13 +54,6 @@ MenuScene::MenuScene(GameManager* _gameManager) : Scene(_gameManager)
     background->setSize(gameManager->getWindowWidth(),  gameManager->getWindowHeight());
     addObject(background);
 
-    // start menu
-   /* startText = std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), "INICIO");
-    startText->setColor(colorPressed);
-    startText->setSize(static_cast<int>(gameManager->getWindowWidth() / 4.0f), static_cast<int>(gameManager->getWindowHeight() / 20.0f));
-    startText->setPosition(static_cast<int>(gameManager->getWindowWidth() / 2.0f - startText->getWidth() / 2.0f), background->getHeight() + 60);
-    addObject(startText);*/
-
     startPlayer1Text = std::make_shared<Text>(gameManager->getAssetManager()->getFont1(), gameManager->getRenderer(), "Josh");
     startPlayer1Text->setColor(colorPressed);
     startPlayer1Text->setSize(84.77, 24.71);

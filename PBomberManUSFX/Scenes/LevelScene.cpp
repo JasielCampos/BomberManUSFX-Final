@@ -91,6 +91,16 @@ LevelScene::LevelScene(GameManager* _gameManager, Skin _skin, const unsigned int
     gameoverSound = std::make_shared<Sound>(gameManager->getAssetManager()->getSound(SoundEnum::Lose));
     winSound = std::make_shared<Sound>(gameManager->getAssetManager()->getSound(SoundEnum::Win));
     explosionSound = std::make_shared<Sound>(gameManager->getAssetManager()->getSound(SoundEnum::Explosion));
+
+    itemTeleportSound = std::make_shared<Sound>(gameManager->getAssetManager()->getSound(SoundEnum::Teleport));
+    itemVidaSound = std::make_shared<Sound>(gameManager->getAssetManager()->getSound(SoundEnum::Vida));
+    itemAntiVidaSound = std::make_shared<Sound>(gameManager->getAssetManager()->getSound(SoundEnum::AntiVida));
+    //itemRayoSound = std::make_shared<Sound>(gameManager->getAssetManager()->getSound(SoundEnum::Rayo));
+    itemTortugaSound = std::make_shared<Sound>(gameManager->getAssetManager()->getSound(SoundEnum::Tortuga));
+    itemAntiTiempoSound = std::make_shared<Sound>(gameManager->getAssetManager()->getSound(SoundEnum::AntiTiempo));
+    itemVelocidadSound = std::make_shared<Sound>(gameManager->getAssetManager()->getSound(SoundEnum::Velocidad));
+    itemTiempoSound = std::make_shared<Sound>(gameManager->getAssetManager()->getSound(SoundEnum::Tiempo));
+
     // render text
     spawnTextObjects();
     // generate tile map
@@ -1248,6 +1258,7 @@ void LevelScene::updatePlayerCollision()
             spawnPlayer(fieldPositionX + 1 * scaledTileSize,
                 fieldPositionY + 13 * scaledTileSize);
             doorItemTP = nullptr;
+            itemTeleportSound->play();
         }
     }
 
@@ -1260,6 +1271,7 @@ void LevelScene::updatePlayerCollision()
             vida = vida + 1;
             doorItemV = nullptr;
             updateVida();
+            itemVidaSound->play();
         }
     }
 
@@ -1276,6 +1288,7 @@ void LevelScene::updatePlayerCollision()
             removeObject(player);
             spawnPlayer(fieldPositionX + playerStartX * scaledTileSize,
                 fieldPositionY + playerStartY * scaledTileSize);
+            itemAntiVidaSound->play();
         }
     }
 
@@ -1287,6 +1300,7 @@ void LevelScene::updatePlayerCollision()
             levelTimer = levelTimer + 10000;
             removeObject(doorItemT);
             doorItemT = nullptr;
+            itemTiempoSound->play();
         }
     }
 
@@ -1298,6 +1312,7 @@ void LevelScene::updatePlayerCollision()
             levelTimer = levelTimer - 10000; 
             removeObject(doorItemAT); 
             doorItemAT = nullptr;
+            itemAntiTiempoSound->play();
         }
     }
 
@@ -1308,8 +1323,9 @@ void LevelScene::updatePlayerCollision()
         if (isCollisionDetected(playerRect, doorItemTort->getRect()))
         {
             removeObject(doorItemTort);
-            player->speed = 0.002f;
+            player->speed = 0.003f;
             doorItemTort = nullptr;
+            itemTortugaSound->play();
         }
     }
     
@@ -1322,6 +1338,7 @@ void LevelScene::updatePlayerCollision()
             removeObject(doorItemVD);
             player->speed = 0.02f;
             doorItemVD = nullptr;
+            itemVelocidadSound->play();
         }
     }
 }

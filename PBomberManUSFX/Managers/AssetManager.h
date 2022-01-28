@@ -48,6 +48,16 @@ enum class SoundEnum : int
 {
     Win,
     Lose,
+
+    Teleport,
+    Vida,
+    AntiVida,
+    Tortuga,
+    AntiTiempo,
+    Door,
+    Velocidad,
+    Tiempo,
+
     Explosion
 };
 /**

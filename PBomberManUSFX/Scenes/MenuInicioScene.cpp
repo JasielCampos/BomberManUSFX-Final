@@ -151,8 +151,8 @@ void MenuInicioScene::onMenuItemPress()
         break;
     case MenuItemI::Credits:
         // go to level scene
-        /*gameManager->getSceneManager()->addScene("credits", std::make_shared<CreditsScene>(this));
-        gameManager->getSceneManager()->activateScene("credits");*/
+        gameManager->getSceneManager()->addScene("credits", std::make_shared<CreditsScene>(gameManager));
+        gameManager->getSceneManager()->activateScene("credits");
         break;
 
     case MenuItemI::Exit:

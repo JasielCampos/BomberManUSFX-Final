@@ -170,6 +170,15 @@ private:
     std::shared_ptr<Sound> gameoverSound = nullptr;                   // game over sound
     std::shared_ptr<Sound> winSound = nullptr;                        // win sound
     std::shared_ptr<Sound> explosionSound = nullptr;                  // explosion sound
+    
+    std::shared_ptr<Sound> itemTeleportSound = nullptr;
+    std::shared_ptr<Sound> itemVidaSound = nullptr;
+    std::shared_ptr<Sound> itemAntiVidaSound = nullptr;
+    std::shared_ptr<Sound> itemTortugaSound = nullptr;
+    std::shared_ptr<Sound> itemAntiTiempoSound = nullptr;
+    std::shared_ptr<Sound> itemVelocidadSound = nullptr;
+    std::shared_ptr<Sound> itemTiempoSound = nullptr;
+    
     std::shared_ptr<Text> timerNumber = nullptr;                      // timer
     std::shared_ptr<Text> scoreNumber = nullptr;                      // score
     std::shared_ptr<Text> vidasNumber = nullptr;

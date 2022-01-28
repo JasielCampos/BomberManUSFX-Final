@@ -26,6 +26,7 @@ void AssetManager::load(SDL_Renderer* renderer)
     loadTexture(renderer, GameTexture::RealBrick, "resources/realbrick.png");
     loadTexture(renderer, GameTexture::WallPacman, "resources/wall_sprite.bmp");
     loadTexture(renderer, GameTexture::Skins, "assets/skins.png");
+    loadTexture(renderer, GameTexture::Credits, "assets/Credits.png");
     loadTexture(renderer, GameTexture::Player1, "assets/player1.png");
     loadTexture(renderer, GameTexture::Player2, "assets/player2.png");
     loadTexture(renderer, GameTexture::Player3, "assets/player3.png");
@@ -51,9 +52,18 @@ void AssetManager::load(SDL_Renderer* renderer)
     loadMusic(MusicEnum::MainMenu, "assets/main_theme.ogg");
     loadMusic(MusicEnum::Level, "assets/level.ogg");
     // load sounds
-    loadSound(SoundEnum::Win, "assets/win.wav");
+    loadSound(SoundEnum::Win, "assets/Door.wav");
     loadSound(SoundEnum::Lose, "assets/lose.wav");
     loadSound(SoundEnum::Explosion, "assets/explosion.wav");
+
+    loadSound(SoundEnum::Teleport, "assets/Teleport.wav");
+    loadSound(SoundEnum::Vida, "assets/VidaExtra.wav");
+    loadSound(SoundEnum::AntiVida, "assets/AntiVidTie.wav");
+    loadSound(SoundEnum::Tortuga, "assets/Tortuga.wav");
+    loadSound(SoundEnum::AntiTiempo, "assets/AntiVidTie.wav");
+    loadSound(SoundEnum::Velocidad, "assets/RayoVel.wav");
+    loadSound(SoundEnum::Tiempo, "assets/Tiempo.wav");
+
     if (auto explosionSound = getSound(SoundEnum::Explosion))
     {
         Mix_VolumeChunk(explosionSound.get(), 35);

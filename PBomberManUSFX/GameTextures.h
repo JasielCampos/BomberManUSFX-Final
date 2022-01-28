@@ -18,6 +18,7 @@ enum class GameTexture : int
     RealBrick,
     WallPacman,
     Skins,
+    Credits,
     Player1,
     Player2,
     Player3,
