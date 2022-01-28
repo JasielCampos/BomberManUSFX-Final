@@ -17,6 +17,7 @@ MenuItem& operator++(MenuItem& c)
     return c;
 }
 
+
 // --decrement for menu id
 MenuItem& operator--(MenuItem& c)
 {
