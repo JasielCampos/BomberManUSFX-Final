@@ -59,7 +59,7 @@ CreditsScene::CreditsScene(GameManager* _gameManager) : Scene(_gameManager)
 
  
     // menu music
-    menuMusic = std::make_shared<Music>(gameManager->getAssetManager()->getMusic(MusicEnum::MainMenu));
+    menuMusic = std::make_shared<Music>(gameManager->getAssetManager()->getMusic(MusicEnum::Credits));
 }
 
 void CreditsScene::onEnter()

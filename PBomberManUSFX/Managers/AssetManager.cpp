@@ -50,6 +50,7 @@ void AssetManager::load(SDL_Renderer* renderer)
     loadTexture(renderer, GameTexture::Door, "assets/door.png");
     // load music
     loadMusic(MusicEnum::MainMenu, "assets/main_theme.ogg");
+    loadMusic(MusicEnum::Credits, "assets/mcr.ogg");
     loadMusic(MusicEnum::Level, "assets/level.ogg");
     // load sounds
     loadSound(SoundEnum::Win, "assets/Door.wav");

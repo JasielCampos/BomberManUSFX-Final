@@ -38,6 +38,7 @@
 enum class MusicEnum : int
 {
     MainMenu,
+    Credits,
     Level
 };
 /**
