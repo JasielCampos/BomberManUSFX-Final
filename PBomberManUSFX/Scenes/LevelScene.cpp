@@ -115,9 +115,9 @@ void LevelScene::spawnTextObjects()
     const int fontHeight = static_cast<int>(gameManager->getWindowHeight() / 30.0f);
     // timer text
     auto timerText =
-        std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), "T");
+        std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), "s");
     timerText->setSize(20,20);
-    timerText->setPosition(30, 10);
+    timerText->setPosition(105, 10);
     timerText->attachToCamera(false);
     addObject(timerText);
     backgroundObjectLastNumber++;
@@ -125,31 +125,37 @@ void LevelScene::spawnTextObjects()
     // timer number
     timerNumber = std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), "000");
     timerNumber->setSize(fontWidth * 3, fontHeight);
-    timerNumber->setPosition(timerText->getPositionX() + timerText->getWidth() + 30,
-                                timerText->getPositionY());
+    timerNumber->setPosition(20,10);
     timerNumber->attachToCamera(false);
     addObject(timerNumber);
     backgroundObjectLastNumber++;
 
-    // score
+    // scoretxt
     std::string scoreText = std::to_string(score);
     scoreNumber =
         std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), scoreText);
     scoreNumber->setSize(fontWidth * static_cast<int>(scoreText.size()), fontHeight);
-    scoreNumber->setPosition(200, 10);
-    /*scoreNumber->setPosition(
-        static_cast<int>(gameManager->getWindowWidth() / 2.0f - scoreNumber->getWidth() / 2.0f),
-        timerText->getPositionY());*/
+    scoreNumber->setPosition(480, 10);
     scoreNumber->attachToCamera(false);
     addObject(scoreNumber);
     backgroundObjectLastNumber++;
+    // score
+    std::string scoreT = "Score";
+    auto scoretxt =
+        std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), scoreT);
+    scoretxt->setSize(fontWidth * static_cast<int>(scoreT.size()), fontHeight);
+    scoretxt->setPosition(310, 10);
+    scoretxt->attachToCamera(false);
+    addObject(scoretxt);
+    backgroundObjectLastNumber++;
 
     // vida text
-    std::string vTextConv = "Vidas";
+    std::string vTextConv = "f";
     auto vText =
-        std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), vTextConv);
-    vText->setSize(fontWidth * static_cast<int>(vTextConv.size()), fontHeight);
-    vText->setPosition(340, 10);
+        std::make_shared<Text>(gameManager->getAssetManager()->getFont2(), gameManager->getRenderer(), vTextConv);
+    vText->setSize(22, 20);
+    vText->setColor({ 224, 30, 55, 255 });
+    vText->setPosition(220, 12);
     vText->attachToCamera(false);
     addObject(vText);
     backgroundObjectLastNumber++;
@@ -159,18 +165,19 @@ void LevelScene::spawnTextObjects()
     vidasNumber =
         std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), vidasText);
     vidasNumber->setSize(fontWidth * static_cast<int>(vidasText.size()), fontHeight);
-    vidasNumber->setPosition(300, 10);
+    vidasNumber->setPosition(180, 10);
     vidasNumber->attachToCamera(false);
     addObject(vidasNumber);
     backgroundObjectLastNumber++;
 
     // stage
-    std::string stageTextConv = "Fase " + std::to_string(stage);
+    std::string stageTextConv = "Nivel " + std::to_string(stage);
     auto stageText =
         std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(), stageTextConv);
     stageText->setSize(fontWidth * static_cast<int>(stageTextConv.size()), fontHeight);
     stageText->setPosition(gameManager->getWindowWidth() - 30 - stageText->getWidth(),
                             timerText->getPositionY());
+    stageText->setColor({ 30, 145, 214, 255 });
     stageText->attachToCamera(false);
     addObject(stageText);
     backgroundObjectLastNumber++;
@@ -1178,7 +1185,7 @@ void LevelScene::updateScore()
     scoreNumber->setSize(static_cast<int>(timerNumber->getWidth() / 3.0f) *
                                 static_cast<int>(scoreText.size()),
                             scoreNumber->getHeight());
-    scoreNumber->setPosition(200, 10);
+    scoreNumber->setPosition(480, 10);
 }
 
 void LevelScene::updateVida()
@@ -1188,7 +1195,7 @@ void LevelScene::updateVida()
     vidasNumber->setSize(static_cast<int>(timerNumber->getWidth() / 3.0f) *
         static_cast<int>(vidasText.size()),
         vidasNumber->getHeight());
-    vidasNumber->setPosition(300, 10);
+    vidasNumber->setPosition(180, 10);
 }
 
 void LevelScene::updatePlayerCollision()
@@ -1280,7 +1287,6 @@ void LevelScene::updatePlayerCollision()
             levelTimer = levelTimer + 10000;
             removeObject(doorItemT);
             doorItemT = nullptr;
-            //updateLevelTimer();
         }
     }
 
@@ -1290,10 +1296,8 @@ void LevelScene::updatePlayerCollision()
         if (isCollisionDetected(playerRect, doorItemAT->getRect()))
         {
             levelTimer = levelTimer - 10000; 
-            removeObject(doorItemAT);
-            
+            removeObject(doorItemAT); 
             doorItemAT = nullptr;
-            //updateLevelTimer();
         }
     }
 

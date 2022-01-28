@@ -8,6 +8,7 @@ void AssetManager::load(SDL_Renderer* renderer)
         // load font
     loadFont();
     loadFont1();
+    loadFont2();
     // load textures
     loadTexture(renderer, GameTexture::MenuBack, "assets/title.png");
     loadTexture(renderer, GameTexture::Metal, "resources/muro_metal.jpg");
@@ -69,6 +70,11 @@ std::shared_ptr<TTF_Font> AssetManager::getFont1() const
     return font1;
 }
 
+std::shared_ptr<TTF_Font> AssetManager::getFont2() const
+{
+    return font2;
+}
+
 std::shared_ptr<SDL_Texture> AssetManager::getTexture(GameTexture texture)
 {
     return textures[texture];
@@ -99,6 +105,16 @@ void AssetManager::loadFont1()
     // load font
     font1 = std::shared_ptr<TTF_Font>(TTF_OpenFont("assets/bman.ttf", 24), TTF_CloseFont);
     if (!font1)
+    {
+        std::cout << "TTF_OpenFont Error: " << TTF_GetError() << std::endl;
+    }
+}
+
+void AssetManager::loadFont2()
+{
+    // load font
+    font2 = std::shared_ptr<TTF_Font>(TTF_OpenFont("assets/Hearts.ttf", 32), TTF_CloseFont);
+    if (!font2)
     {
         std::cout << "TTF_OpenFont Error: " << TTF_GetError() << std::endl;
     }

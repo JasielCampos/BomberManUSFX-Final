@@ -83,6 +83,7 @@ class AssetManager
         */
     std::shared_ptr<TTF_Font> getFont() const;
     std::shared_ptr<TTF_Font> getFont1() const;
+    std::shared_ptr<TTF_Font> getFont2() const;
     /**
         * @brief Get textures
         *
@@ -113,6 +114,7 @@ class AssetManager
         */
     void loadFont();
     void loadFont1();
+    void loadFont2();
     /**
         * @brief load textures
         *
@@ -138,6 +140,7 @@ class AssetManager
 
     std::shared_ptr<TTF_Font> font = nullptr;                                          // font
     std::shared_ptr<TTF_Font> font1 = nullptr;
+    std::shared_ptr<TTF_Font> font2 = nullptr;
     std::unordered_map<GameTexture, std::shared_ptr<SDL_Texture>, EnumClassHash> textures; // map of textures
     std::unordered_map<MusicEnum, std::shared_ptr<Mix_Music>, EnumClassHash> musics;       // map of music
     std::unordered_map<SoundEnum, std::shared_ptr<Mix_Chunk>, EnumClassHash> sounds;       // map of sounds
