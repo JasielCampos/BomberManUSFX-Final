@@ -91,7 +91,16 @@ private:
     void spawnItem(GameTexture texture, const int positionX, const int positionY);
     void spawnBomb(GameGraphicObject* object);
     void spawnBang(GameGraphicObject* object);
+
     void spawnDoor(GameGraphicObject* object);
+
+     void spawnDoorItemTP(GameGraphicObject* object);
+    void spawnDoorItemV(GameGraphicObject* object);
+    void spawnDoorItemAV(GameGraphicObject* object);
+    void spawnDoorItemT(GameGraphicObject* object);
+    void spawnDoorItemAT(GameGraphicObject* object);
+    void spawnDoorItemTort(GameGraphicObject* object);
+    void spawnDoorItemVD(GameGraphicObject* object);
 
     /**
         * @brief Finish level
@@ -132,6 +141,15 @@ private:
     bool isCollisionDetected(const SDL_Rect& rect1, const SDL_Rect& rect2) const;
     // destroy brick
     void destroyBrick(std::shared_ptr<GameGraphicObject> brick);
+
+    void destroyBrickTP(std::shared_ptr<GameGraphicObject> brick);
+    void destroyBrickV(std::shared_ptr<GameGraphicObject> brick);
+    void destroyBrickAV(std::shared_ptr<GameGraphicObject> brick);
+    void destroyBrickT(std::shared_ptr<GameGraphicObject> brick);
+    void destroyBrickAT(std::shared_ptr<GameGraphicObject> brick);
+    void destroyBrickTort(std::shared_ptr<GameGraphicObject> brick);
+    void destroyBrickVD(std::shared_ptr<GameGraphicObject> brick);
+
     // enemy follow to player if in attack radius
     void followToPlayer(Enemy* enemy);
 
@@ -157,7 +175,17 @@ private:
     std::shared_ptr<Text> vidasNumber = nullptr;
     std::shared_ptr<Player> player = nullptr;                         // player
     std::shared_ptr<Sprite> bomb = nullptr;                           // player's bomb
+
     std::shared_ptr<Sprite> door = nullptr;                           // door for level finish
+
+    std::shared_ptr<Sprite> doorItemTP = nullptr;
+    std::shared_ptr<Sprite> doorItemV = nullptr;                           // door for level finish
+    std::shared_ptr<Sprite> doorItemAV = nullptr;                           // door for level finish
+    std::shared_ptr<Sprite> doorItemT = nullptr;                           // door for level finish
+    std::shared_ptr<Sprite> doorItemAT = nullptr;                           // door for level finish
+    std::shared_ptr<Sprite> doorItemTort = nullptr;                           // door for level finish
+    std::shared_ptr<Sprite> doorItemVD = nullptr;
+
     std::shared_ptr<Sprite> item = nullptr;
     std::vector<std::shared_ptr<Enemy>> enemies;                      // enemies
     std::vector<std::shared_ptr<Item>> items;

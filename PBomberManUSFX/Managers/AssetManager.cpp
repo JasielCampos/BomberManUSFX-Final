@@ -31,9 +31,13 @@ void AssetManager::load(SDL_Renderer* renderer)
     loadTexture(renderer, GameTexture::Player4, "assets/player4.png");
     loadTexture(renderer, GameTexture::Player5, "assets/player5.png");
     loadTexture(renderer, GameTexture::Player6, "assets/player6.png");
+    loadTexture(renderer, GameTexture::TpItem, "assets/Teleport.png");
+    loadTexture(renderer, GameTexture::HeartItem, "assets/heart.png");
     loadTexture(renderer, GameTexture::SkullItem, "assets/skull.png");
     loadTexture(renderer, GameTexture::RayoItem, "assets/rayo.png");
+    loadTexture(renderer, GameTexture::TurtleItem, "assets/turtle.png");
     loadTexture(renderer, GameTexture::RelojItem, "assets/reloj.png");
+    loadTexture(renderer, GameTexture::HourglassItem, "assets/hourglass.png");
     loadTexture(renderer, GameTexture::MedalItem, "assets/medal.png");
     loadTexture(renderer, GameTexture::Enemy1, "assets/enemy_1.png");
     loadTexture(renderer, GameTexture::Enemy2, "assets/enemy_2.png");
