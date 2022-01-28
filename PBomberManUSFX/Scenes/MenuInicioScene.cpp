@@ -72,8 +72,6 @@ MenuInicioScene::MenuInicioScene(GameManager* _gameManager) : Scene(_gameManager
     exitText->setSize(static_cast<int>(gameManager->getWindowWidth() / 5.0f), static_cast<int>(gameManager->getWindowHeight() / 20.0f));
     exitText->setPosition(startText->getPositionX(), creditsText->getPositionY() + exitText->getHeight() + 30);
     addObject(exitText);
-
-    gameManager->getSceneManager()->addScene("gameover", std::make_shared<GameOverScene>(gameManager));
     // menu music
     menuMusic = std::make_shared<Music>(gameManager->getAssetManager()->getMusic(MusicEnum::MainMenu));
 }
