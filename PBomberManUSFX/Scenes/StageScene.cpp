@@ -10,7 +10,7 @@ StageScene::StageScene(GameManager* _gameManager, const unsigned int _level, con
 {
     // stage text
     auto text = std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(),
-                                        "ETAPA " + std::to_string(_level));
+                                        "Nivel " + std::to_string(_level));
     text->setSize(static_cast<int>(gameManager->getWindowWidth() / 3.0f),
                     static_cast<int>(gameManager->getWindowHeight() / 20.0f));
     text->setPosition(static_cast<int>(gameManager->getWindowWidth() / 2.0f - text->getWidth() / 2.0f),
@@ -23,7 +23,7 @@ StageScene::StageScene(GameManager* _gameManager, Skin _skin, const unsigned int
 {
     // stage text
     auto text = std::make_shared<Text>(gameManager->getAssetManager()->getFont(), gameManager->getRenderer(),
-        "ETAPA " + std::to_string(_level));
+        "Nivel " + std::to_string(_level));
     text->setSize(static_cast<int>(gameManager->getWindowWidth() / 3.0f),
         static_cast<int>(gameManager->getWindowHeight() / 20.0f));
     text->setPosition(static_cast<int>(gameManager->getWindowWidth() / 2.0f - text->getWidth() / 2.0f),
