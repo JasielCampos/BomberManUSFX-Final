@@ -7,6 +7,12 @@
 int main(int /*argc*/, char** /*argv[]*/)
 {
     // init game
+
+    std::cout << "BOMBER MAN USFX" << std::endl;
+    std::cout << "Campos Romero Adriana Jasiel" << std::endl;
+    std::cout << "Diaz Soliz Jhon Carlos" << std::endl;
+
+
     GameManager* game = nullptr;
     game = GameManager::getInstance(std::string("Bomberman USFX"), 800, 600);
     // game = new GameManager(std::string("Bomberman USFX"), 800, 600);

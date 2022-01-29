@@ -1530,7 +1530,7 @@ void LevelScene::updateBangsCollision()
             if (isCollisionDetected(playerRect, bang->getRect()))
             {
                 vida = vida - 1;
-                std::cout << vida << std::endl;
+               // std::cout << vida << std::endl;
                 removeObject(player);
                 spawnPlayer(fieldPositionX + playerStartX * scaledTileSize, fieldPositionY + playerStartY * scaledTileSize);
                 updateVida();
